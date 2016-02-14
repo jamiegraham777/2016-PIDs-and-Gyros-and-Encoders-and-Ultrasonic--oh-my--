@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.PIDController;
 
 //******************[ Start Code ]*********************************************************************
 
@@ -37,6 +38,8 @@ public class Robot extends IterativeRobot {
 	boolean direction, stopped, armCompleted;
 	double offset;	
 	
+	PIDController driveControl;
+	
 	public AnalogUltrasonic sonic = new AnalogUltrasonic(2, DistanceUnits.INCHES, VPI);
 	public AnalogGyro gyro = new AnalogGyro(1);
 	//LaserCounter laserCounter;
@@ -44,8 +47,11 @@ public class Robot extends IterativeRobot {
 	
 	
 	
+	
 
 	public void RobotInit() {
+		
+		
 
 		leftEncoder.setDistancePerPulse(12 * Math.PI * ((1 / 1024f) / 2)); // 12 inches times pi divided by gearbox ratio (2.5 to 5) divided by fps
 		rightEncoder.setDistancePerPulse(12 * Math.PI * ((1 / 1024f) / 2));
@@ -96,7 +102,7 @@ public class Robot extends IterativeRobot {
 
 			if (xbox.getRawButton(2) == true) {
 				armCompleted = false;
-				laserCounter.reset();
+	//			laserCounter.reset();
 			}
 			//driveArm(); 
 
@@ -189,21 +195,21 @@ public class Robot extends IterativeRobot {
 //			}
 //		}
 		
-		if (armCompleted == false) {
-			int count = laserCounter.laserCheck();
-			if (count < 10) {
-				armMotor2.set(0.75);
-				System.out.println("One " + count);
-			} else if (count < 20) {
-				armMotor2.set(-0.75);
-				System.out.println("Two " + count);
-			} else if (count > 20) {
-				armCompleted = true;
-				armMotor2.set(0);
-				laserCounter.reset();
-				System.out.println("Three");
-			}
-		}
+//		if (armCompleted == false) {
+//			int count = laserCounter.laserCheck();
+//			if (count < 10) {
+//				armMotor2.set(0.75);
+//				System.out.println("One " + count);
+//			} else if (count < 20) {
+//				armMotor2.set(-0.75);
+//				System.out.println("Two " + count);
+//			} else if (count > 20) {
+//				armCompleted = true;
+//				armMotor2.set(0);
+//				laserCounter.reset();
+//				System.out.println("Three");
+//			}
+//		}
 	}
 
 	public void driveStraight(double num) {
@@ -220,7 +226,7 @@ public class Robot extends IterativeRobot {
 
 		if (offset > 0) {
 			System.out.println("left needs to be lowered");
-			FrightWheel.set(negornot * (1));
+	//		FrightWheel.set(negornot * (1));
 			System.out.println("right wheel: " + (negornot * (1)));
 			adder = Math.abs(offset);
 			if (adder > 10) {
@@ -228,17 +234,17 @@ public class Robot extends IterativeRobot {
 			}
 			System.out.println("adder: " + adder);
 			System.out.println("left wheel: " + (negornot * (1 - (adder * 0.1))));
-			FleftWheel.set(negornot * (1 - (adder * 0.1)));
+	//		FleftWheel.set(negornot * (1 - (adder * 0.1)));
 		} else if (offset < 0) {
 			System.out.println("right needs to be lowered");
-			FleftWheel.set(negornot * (1));
+	//		FleftWheel.set(negornot * (1));
 			System.out.println("left wheel: " + (negornot * (1)));
 			adder = Math.abs(offset);
 			while (adder > 10) {
 				adder = adder / 10;
 			}
 			System.out.println("right wheel: " + (negornot * (1 - (adder * 0.1))));
-			FrightWheel.set(negornot * (1 - (adder * 0.1)));
+		//	FrightWheel.set(negornot * (1 - (adder * 0.1)));
 		}
 
 	}
